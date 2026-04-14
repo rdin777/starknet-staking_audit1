@@ -1,14 +1,40 @@
-# Starknet BTC Staking - Critical Vulnerability PoC
+Markdown
+# Starknet BTC Staking - Critical Vulnerability PoC 🛡️
 
 ## Executive Summary
-This repository contains proof and technical analysis of a critical logic bypass in the BTC Staking Attestation module.
+Technical analysis and Proof-of-Concept (PoC) for a **Critical Logic Bypass** in the BTC Staking Attestation module. This vulnerability allows for reward extraction without actual BTC collateral.
 
-## Vulnerability: Ghost Staking
-The core issue lies in `Attestation.cairo` using public block hashes for validation.
-- **Root Cause:** `get_block_hash_syscall` provides data available to any network participant.
-- **Impact:** Attackers can claim 25% of rewards without BTC collateral and manipulate `MintingCurve` inflation.
+> **Status:** Unpatched / Public Disclosure due to lack of technical engagement from the team.
 
-## How to run the PoC
-1. Install `snforge`.
-2. Run: `snforge test test_ghost_stake_reward_extraction`
-3. Result: The test will demonstrate rewards being allocated to a staker with zero BTC collateral.
+---
+
+## 🚨 The Vulnerability: Ghost Staking
+The root cause is an insecure reliance on `get_block_hash_syscall` within `Attestation.cairo`. Since block hashes are public, any network participant can forge attestation data.
+
+**Impact:**
+* **Reward Theft:** Attackers can siphon up to 25% of rewards with zero BTC collateral.
+* **Economic Manipulation:** Manipulation of the `MintingCurve` inflation metrics.
+
+---
+
+## 🛠️ Proof of Concept (PoC)
+The vulnerability is verified through local simulation using `snforge` and `exploit.js`.
+
+### 1. Cairo Integration Test
+Demonstrates reward allocation to an empty staker address.
+```bash
+cd ghost_staking_audit
+snforge test tests/test_ghost_stake.cairo
+2. External Exploit Script
+Simulates the attestation forgery logic.
+
+Bash
+node scripts/exploit.js
+📅 Disclosure Timeline
+March 21, 2026: Submitted report to the team. Dismissed as "AI slop".
+
+March 22-24, 2026: Requested technical review; offered private PoC access. No response.
+
+March 24, 2026: Public disclosure to protect user funds and ecosystem integrity.
+
+Researcher: rdin777
