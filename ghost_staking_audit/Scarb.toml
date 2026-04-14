@@ -1,0 +1,11 @@
+[package]
+name = "ghost_staking_audit"
+version = "0.1.0"
+edition = "2023_01"
+
+[dependencies]
+starknet = "2.7.0"
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.58.0" }
+
+[[target.starknet-contract]]
+sierra = true
