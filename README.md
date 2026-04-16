@@ -1,4 +1,7 @@
 Markdown
+
+https://dev.to/rdin777/starknet-btc-staking-how-to-extract-rewards-with-zero-collateral-and-why-the-team-ignored-it-fo
+
 # Starknet BTC Staking - Critical Vulnerability PoC 🛡️
 
 ## Executive Summary
