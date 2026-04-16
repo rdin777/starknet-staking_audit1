@@ -41,3 +41,23 @@ March 22-24, 2026: Requested technical review; offered private PoC access. No re
 March 24, 2026: Public disclosure to protect user funds and ecosystem integrity.
 
 Researcher: rdin777
+
+## 🛡 Recent Audit Findings
+
+### [H-01] Gas Denial of Service via Unbounded Loop
+**Severity:** High
+**Vulnerability Type:** Denial of Service (DoS)
+
+**Description:**
+The contract iterates through all registered tokens in a single transaction within the \`update_rewards\` function. There is no pagination or limit on the number of tokens.
+
+**Impact:**
+An attacker can bloat the token list by calling \`add_btc_token\`. As shown in the PoC, the gas cost increases linearly. With enough tokens, the transaction will exceed the **Starknet Block Gas Limit**, preventing any user from interacting with the rewards logic.
+
+**PoC Results (starknet-foundry/snforge):**
+- **Base state (1 token):** ~13,840 L2 gas
+- **Attacked state (500 tokens):** ~8,047,846 L2 gas 🚀
+
+---
+*Research and PoC developed by rdin777*
+
