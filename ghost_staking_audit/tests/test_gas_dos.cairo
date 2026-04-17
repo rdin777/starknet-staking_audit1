@@ -1,4 +1,5 @@
 use core::starknet::ContractAddress;
+use core::traits::TryInto;
 use snforge_std::{declare, ContractClassTrait, DeclareResult};
 use ghost_staking_audit::IGhostStakingDispatcher;
 use ghost_staking_audit::IGhostStakingDispatcherTrait;
@@ -17,9 +18,11 @@ fn test_unbounded_iteration_gas_limit() {
 
     let mut i: u32 = 0;
     while i < 500 {
-        // Используем try_into вместо устаревших макросов
-        let mock_token: ContractAddress = 0x123.try_into().unwrap(); 
-        dispatcher.add_btc_token(mock_token);
+        // Самый надежный способ конвертации для компилятора:
+        let felt_val: felt252 = (i + 1).into();
+        let unique_address: ContractAddress = felt_val.try_into().unwrap();
+        
+        dispatcher.add_btc_token(unique_address);
         i += 1;
     };
 
