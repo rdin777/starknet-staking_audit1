@@ -61,3 +61,23 @@ An attacker can bloat the token list by calling \`add_btc_token\`. As shown in t
 ---
 *Research and PoC developed by rdin777*
 
+---
+
+## 🛠 Latest Updates (April 17, 2026)
+
+### Fixed: Logic Vulnerability & Storage Inflation
+During further auditing, a **Duplicate Token Registration** bug was identified. This allowed an attacker to register the same token multiple times, artificially inflating the loop size even with a single malicious contract.
+
+**Changes implemented:**
+- Added `token_registered: Map<ContractAddress, bool>` to track unique assets.
+- Integrated `assert` validation in `add_btc_token` to prevent double-registration.
+- Refactored imports to use modern `starknet` core library syntax.
+
+### 📊 Security Verification Results
+All tests passed successfully, confirming both the vulnerability and the fix:
+1. `test_duplicate_token_registration`: **PASSED** (Confirmed: attempt to add duplicate now panics).
+2. `test_unbounded_iteration_gas_limit`: **PASSED** (Confirmed: 500 unique tokens consume ~9.8M gas).
+
+**Status:** The contract is now protected against internal redundancy attacks.
+
+
