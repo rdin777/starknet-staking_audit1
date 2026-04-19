@@ -85,4 +85,19 @@ All tests passed successfully, confirming both the vulnerability and the fix:
 
 **Status:** The contract is now protected against internal redundancy attacks.
 
+🛡️ Finding #5: Precision Loss due to Integer Division
+Severity: High
+Category: Math / Logic Error
+
+Description:
+In staking_math_v2.cairo, the reward calculation performs division before multiplication. Since Cairo handles only integer math, any result of (duration * rate) / supply that is less than 1 will be rounded down to zero.
+
+Vulnerable Code:
+
+let reward_increase = (duration * rate) / supply * 1_000_000_000_000_000_000;
+Proof of Concept (PoC):
+The mathematical PoC in src/staking_math_v2.cairo demonstrates that even with a significant duration, if the total_supply is large enough, the reward_per_token remains 0, effectively "stealing" rewards from users.
+
+Recommendation:
+Always perform all multiplications before divisions to maintain maximum precision.
 
